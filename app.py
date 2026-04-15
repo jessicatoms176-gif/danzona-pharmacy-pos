@@ -15,9 +15,16 @@ import sqlite3
 import csv
 from functools import wraps
 
+import os
+
 app = Flask(__name__)
 app.secret_key = "danzona_pharmacy_secret_key_2024"
-DB_NAME = "pharmacy_pos.db"
+
+# Use /tmp for database on Render, local file otherwise
+if os.environ.get("RENDER"):
+    DB_NAME = "/tmp/pharmacy_pos.db"
+else:
+    DB_NAME = "pharmacy_pos.db"
 
 
 def get_db():
