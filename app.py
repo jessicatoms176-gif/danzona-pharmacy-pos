@@ -1427,4 +1427,17 @@ def customer_display():
 
 if __name__ == "__main__":
     init_db()
+
+    # Create default admin user if not exists
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE username = 'admin'")
+    if not cursor.fetchone():
+        cursor.execute(
+            "INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, ?)",
+            ("admin", "admin123", "Administrator", "admin"),
+        )
+        conn.commit()
+    conn.close()
+
     app.run(debug=False, host="0.0.0.0", port=5000)
